@@ -1,3 +1,5 @@
+#ifndef MQTTWRAPPER_H
+#define MQTTWRAPPER_H
 #include <mosquittopp.h>
 #include <mosquitto.h>
 
@@ -29,3 +31,5 @@ private:
 
 
 };
+
+#endif

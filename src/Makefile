@@ -41,7 +41,8 @@ DEPDIR:= .dep
 C_SRC:=
 CXX_SRC:= \
 	main.cpp \
-	mqttWrapper.cpp 
+	mqttWrapper.cpp \
+	testPublisher.cpp
 
 # =============== DO NOT MODIFY BELOW =============== #
 CURRENT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
@@ -146,5 +147,3 @@ $(DEPDIR_ABSPATH)/%.d: ;
 .PRECIOUS: $(DEPDIR_ABSPATH)/%.d
 
 -include $(patsubst %,$(DEPDIR_ABSPATH)/%.d,$(basename $(SRC)))
-
-
