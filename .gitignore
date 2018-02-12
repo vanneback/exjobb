@@ -1,0 +1,8 @@
+*.o
+/.dep
+/bin
+/src/.dep
+/src/bin
+/CMakeLists.txt
+*.layout
+*~

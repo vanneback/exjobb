@@ -1,0 +1,3 @@
+[submodule "src/miips_lib"]
+	path = src/miips_lib
+	url = git@git.faltdmz0.net:apps/miips/miips_lib.git
