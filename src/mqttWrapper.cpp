@@ -7,8 +7,8 @@
 
 
 
-MqttWrapper::MqttWrapper(const char *id, const char *host, int port):
-mosquittopp(id)
+MqttWrapper::MqttWrapper(const char *id, const char *host, int port, bool clean_session, int type):
+mosquittopp(id,clean_session)
 {
     this->id = id;
     this->port = port;
@@ -16,7 +16,12 @@ mosquittopp(id)
     mosqpp::lib_init();
     keepalive=120; //seconds
     connect_async(host,port,keepalive);    //connects to broker
-    loop_start();
+
+    if(type == LOOP_START){
+        loop_start();
+    } else if(type == LOOP_WRITE){
+        loop_write();
+    }
 }
 
 MqttWrapper::~MqttWrapper(){
@@ -24,9 +29,9 @@ MqttWrapper::~MqttWrapper(){
     mosqpp::lib_cleanup();
 }
 
-bool MqttWrapper::mqtt_publish(const char * topic, const char* message, int qos)
+bool MqttWrapper::mqtt_publish(int message_size, const char * topic, const void* message, int qos)
 {
-    int ret = publish(NULL,topic,strlen(message), message,qos,false);
+    int ret = publish(NULL,topic,message_size, message,qos,false);
     return(ret == MOSQ_ERR_SUCCESS);
 }
 
@@ -44,8 +49,8 @@ bool MqttWrapper::mqtt_subscribe(int *mid, const char* topic, int qos)
 }
 
 bool MqttWrapper::mqtt_unsubscribe(int *mid, const char* topic){
-    int ret;
-    if(!ret == unsubscribe(mid, topic)){
+    int ret = unsubscribe(mid, topic);
+    if(!ret){
         printf("unsub to >> %s << succeeded \n", topic);
         return true;
     } else {
@@ -54,13 +59,23 @@ bool MqttWrapper::mqtt_unsubscribe(int *mid, const char* topic){
     }
 }
 
+int MqttWrapper::mqtt_max_inflight(unsigned int max)
+{
+    return max_inflight_messages_set(max);
+}
+
+int MqttWrapper::mqtt_disconnect()
+{
+    return disconnect();
+}
+
 
 void MqttWrapper::on_connect(int rc)
 {
     printf("Conneted with code %d. \n", rc);
 
     if(rc==0){
-        //subscribe(NULL,"/hej");
+        
     } else{
         printf("Could not connect : %d\n",rc );
     }
@@ -103,5 +118,5 @@ void MqttWrapper::on_error(){
 
 void MqttWrapper::on_publish(int mid)
 {
-    printf("publish succeeded. >> %d <<\n",mid);
+    printf("publish succeeded. id[%d]\n",mid);
 }
