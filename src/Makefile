@@ -42,7 +42,8 @@ C_SRC:=
 CXX_SRC:= \
 	main.cpp \
 	mqttWrapper.cpp \
-	testPublisher.cpp
+	testPublisher.cpp \
+	outputHandler.cpp
 
 # =============== DO NOT MODIFY BELOW =============== #
 CURRENT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))

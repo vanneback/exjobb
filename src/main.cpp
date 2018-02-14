@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "mqttWrapper.h"
 #include "testPublisher.h"
+#include "outputHandler.h"
 
 const char app_version[] = "1.0.1";
 const char app_name[] = "mqtt_client";
@@ -21,13 +22,13 @@ const char config_filename[] = "mqtt_client.json";
      mqtt2->mqtt_max_inflight(0);
      TestPublisher *test;
      test = new TestPublisher(mqtt2);
-     test->set_file_name("/home/emil/miips/mosquitto_client/src/output/file");
+     OutputHandler *output = new OutputHandler("output/file");
 
      //ca 80 mb per körning//
      //test->test_publish_messages("/hej",100,10000,1);
     //test->test_write_to_file("output/test","testing \ntesting");
-    test->test_system_to_file("free -m");
-    test->test_separation_line();
+    output->output_system_to_file("free -m");
+    output->output_separation_line();
 
 
      //delete mqtt;
