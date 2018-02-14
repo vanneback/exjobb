@@ -12,11 +12,18 @@ OutputHandler::OutputHandler(const char* file_name)
 
 OutputHandler::~OutputHandler()
 {
+    if(file_name != NULL){
+        std::ofstream file;
+        file.open(file_name, std::ofstream::out | std::ofstream::app);
+        file << "\n-----------------------------------------------------------------------------\n";
+        file.close();
+    } 
 
 }
 
 int OutputHandler::output_write_to_file(const char* buffer)
 {
+
     if(file_name == NULL){
         printf("ERROR: set file_name first\n");
         return -1;
@@ -25,6 +32,7 @@ int OutputHandler::output_write_to_file(const char* buffer)
         std::ofstream file;
         file.open(file_name, std::ofstream::out | std::ofstream::app);
         file.write(buffer, strlen(buffer));
+        file << " \n";
         file.close();
     }
         return 0;

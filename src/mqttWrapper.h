@@ -2,6 +2,7 @@
 #define MQTTWRAPPER_H
 #include <mosquittopp.h>
 #include <mosquitto.h>
+#include "outputHandler.h"
 
 #define LOOP_START 1
 #define LOOP_WRITE 2
@@ -28,6 +29,10 @@ public:
     virtual void on_log(int level, const char *str);
     virtual void on_error();
 
+    void set_output(OutputHandler *output);
+    OutputHandler* get_output();
+    const char* get_id();
+
 
 
 private:
@@ -35,6 +40,7 @@ private:
     const char* id;
     int port;
     int keepalive;
+    OutputHandler *output;
 
 
 };

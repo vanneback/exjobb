@@ -1,4 +1,5 @@
-
+#ifndef OUTPUTHANDLER_H
+#define OUTPUTHANDLER_H
 class OutputHandler{
 public:
     OutputHandler(const char* file_name);
@@ -17,3 +18,4 @@ private:
 
 
 };
+#endif

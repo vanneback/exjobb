@@ -1,3 +1,6 @@
+#ifndef TESTPUBLISHER_H
+#define TESTPUBLISHER_H
+
 #include "mqttWrapper.h"
 
 class TestPublisher {
@@ -13,3 +16,4 @@ public:
 private:
     MqttWrapper *mqtt;
 };
+#endif
