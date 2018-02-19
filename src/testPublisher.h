@@ -8,7 +8,7 @@ public:
     TestPublisher(MqttWrapper *mqtt);
     ~TestPublisher();
 
-    void test_publish_messages(const char* topic,int message_size,
+    void publisher_publish_messages(const char* topic,int message_size,
          int number_of_messages, int qos);
 
 

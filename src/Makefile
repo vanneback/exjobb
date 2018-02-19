@@ -16,8 +16,8 @@ TARGET_FILESYSTEM ?= v5_1_1
 TARGET_FILESYSTEM_6300 ?= INHOUSE_DELUXE
 
 # Application specific compiler flags (in addition to system wide build environment)
-CXXFLAGS += -Wall -O2
-CFLAGS += -Wall -pthread -O2
+CXXFLAGS += -Wall -O2 -g -std=c++11
+CFLAGS += -Wall -pthread -O2 -g
 LDFLAGS += -Lmiips_lib/bin
 DEFS:= -DBUILD_TARGET=$(BUILD_TARGET)
 INCL:=
@@ -43,7 +43,9 @@ CXX_SRC:= \
 	main.cpp \
 	mqttWrapper.cpp \
 	testPublisher.cpp \
-	outputHandler.cpp
+	outputHandler.cpp \
+	clientHandler.cpp \
+	testSubsLoad.cpp
 
 # =============== DO NOT MODIFY BELOW =============== #
 CURRENT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))

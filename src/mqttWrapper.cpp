@@ -1,4 +1,3 @@
-
 #include "mqttWrapper.h"
 #include "outputHandler.h"
 #include <mosquittopp.h>
@@ -9,29 +8,51 @@
 #include <fstream>
 
 
+MqttWrapper::MqttWrapper(void) 
+{
+
+}
+
+MqttWrapper::MqttWrapper(const MqttWrapper &obj)
+{
+    id = obj.id;
+    host = obj.host;
+    port = obj.port;
+    keepalive = obj.keepalive;
+    output = obj.output;
+    type = obj.type;
+    clean_session = obj.clean_session;
+}
 
 MqttWrapper::MqttWrapper(const char *id, const char *host, int port, bool clean_session, int type):
-mosquittopp(id,clean_session)
+    mosquittopp(id,clean_session),
+    id(id),
+    port(port),
+    host(host),
+    output(NULL),
+    type(type)
+
 {
-    this->id = id;
-    this->port = port;
-    this->host = host;
-    this->output = NULL;
     mosqpp::lib_init();
-    keepalive=120; //seconds
-    connect_async(host,port,keepalive);    //connects to broker
+    connect_async(host,port,keepalive);
 
     if(type == LOOP_START){
         loop_start();
     } else if(type == LOOP_WRITE){
         loop_write();
+    } else if(type == LOOP_READ){
+        loop_read();
+    } else if (type==NO_LOOP){
+        
     }
 }
+
 
 MqttWrapper::~MqttWrapper(){
     loop_stop();
     mosqpp::lib_cleanup();
 }
+
 
 bool MqttWrapper::mqtt_publish(int message_size, const char * topic, const void* message, int qos)
 {
@@ -73,6 +94,32 @@ int MqttWrapper::mqtt_disconnect()
     return disconnect();
 }
 
+int MqttWrapper::mqtt_reconnect()
+{
+    return reconnect();
+}
+
+void MqttWrapper::on_message(const struct mosquitto_message *message)
+{
+    char buf[100];
+    std::string out_message = std::string();
+    
+   //std::string out_message = std::string(message->topic);
+    memset(buf,0,50*sizeof(char));
+    memcpy(buf,message->payload,50*sizeof(char));
+    if(output){
+        out_message.append(buf);
+        out_message.append(",");
+        if(head_topic.compare(std::string(message->topic))==0){
+           output->output_write_to_file(out_message.data(),true);    
+        } else {
+            output->output_write_to_file(out_message.data(),false);
+        }
+
+    } else {
+    printf("%s \n",buf);
+    }
+}
 
 void MqttWrapper::on_connect(int rc)
 {
@@ -88,26 +135,15 @@ void MqttWrapper::on_connect(int rc)
 void MqttWrapper::on_disconnect(int rc)
 {
     printf("[%s] Disconneted with code %d. \n",id, rc);
+    disconnect();
+    loop_stop();
+    mosqpp::lib_cleanup();
+
 }
 
 void MqttWrapper::on_subscribe(int mid, int qos_count, const int *granted_qos)
 {
 
-}
-
-void MqttWrapper::on_message(const struct mosquitto_message *message)
-{
-    char buf[100];
-    std::string out_message = std::string(message->topic);
-    memset(buf,0,50*sizeof(char));
-    memcpy(buf,message->payload,50*sizeof(char));
-    if(output){
-        out_message.append("->");
-        out_message.append(buf);
-        output->output_write_to_file(out_message.data());
-    } else {
-    printf("message -> %s \n",buf);
-    }
 }
 
 void MqttWrapper::on_unsubscribe(int mid){
@@ -122,6 +158,10 @@ void MqttWrapper::on_log(int level, const char *str){
     }
 
 
+}
+
+void MqttWrapper::add_topic(char* topic){
+    topics.push_back(std::string(topic));
 }
 
 void MqttWrapper::on_error(){
@@ -147,3 +187,34 @@ const char* MqttWrapper::get_id()
 {
     return id;
 }
+
+void MqttWrapper::set_id(const char* id)
+{
+    this->id = id;
+}
+
+bool MqttWrapper::get_clean_session(void)
+{
+    return clean_session;
+}
+
+void MqttWrapper::set_clean_session(bool clean_session){
+    this->clean_session = clean_session;
+}
+
+const char* MqttWrapper::get_host()
+{
+    return host;
+}
+
+int MqttWrapper::get_port()
+{
+    return port;
+}
+
+void MqttWrapper::set_head_topic(std::string topic)
+{
+    this->head_topic = topic;
+}
+
+

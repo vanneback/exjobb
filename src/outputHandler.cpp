@@ -5,9 +5,9 @@
 #include <fstream>
 #include <limits.h>
 
-OutputHandler::OutputHandler(const char* file_name)
+OutputHandler::OutputHandler(const char* file_name):
+    file_name(file_name)
 {
-    this->file_name = file_name;
 }
 
 OutputHandler::~OutputHandler()
@@ -18,10 +18,9 @@ OutputHandler::~OutputHandler()
         file << "\n-----------------------------------------------------------------------------\n";
         file.close();
     } 
-
 }
 
-int OutputHandler::output_write_to_file(const char* buffer)
+int OutputHandler::output_write_to_file(const char* buffer, bool line)
 {
 
     if(file_name == NULL){
@@ -31,8 +30,10 @@ int OutputHandler::output_write_to_file(const char* buffer)
 
         std::ofstream file;
         file.open(file_name, std::ofstream::out | std::ofstream::app);
+        if(line){
+            file << " \n";
+        }
         file.write(buffer, strlen(buffer));
-        file << " \n";
         file.close();
     }
         return 0;
@@ -68,7 +69,7 @@ int OutputHandler::output_system_to_file(const char* command)
             outbuf.append(inbuf);
         }
         pclose(infile);
-        output_write_to_file(outbuf.data());
+        output_write_to_file(outbuf.data(),true);
     }
     return 0;
 }

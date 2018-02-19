@@ -4,7 +4,7 @@ class OutputHandler{
 public:
     OutputHandler(const char* file_name);
     ~OutputHandler();
-    int output_write_to_file(const char* buffer);
+    int output_write_to_file(const char* buffer,bool line);
 
     int output_system_to_file(const char* command);
 

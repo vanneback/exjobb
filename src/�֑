@@ -1,0 +1,5 @@
+$SYS/broker/clients/total->2 
+$SYS/broker/clients/active->2 
+$SYS/broker/clients/connected->2 
+$SYS/broker/heap/current->16568 
+$SYS/broker/heap/current->16496 
