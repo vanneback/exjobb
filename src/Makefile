@@ -45,7 +45,8 @@ CXX_SRC:= \
 	testPublisher.cpp \
 	outputHandler.cpp \
 	clientHandler.cpp \
-	testSubsLoad.cpp
+	tests/testSubsLoad.cpp \
+	tests/testCleanLoad.cpp
 
 # =============== DO NOT MODIFY BELOW =============== #
 CURRENT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))

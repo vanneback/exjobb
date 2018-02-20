@@ -5,11 +5,11 @@
 
 class TestPublisher {
 public:
-    TestPublisher(MqttWrapper *mqtt);
+    TestPublisher();
     ~TestPublisher();
 
-    void publisher_publish_messages(const char* topic,int message_size,
-         int number_of_messages, int qos);
+    static void publisher_publish_messages(MqttWrapper *mqtt ,const char* topic,
+                    int message_size,int number_of_messages, int qos);
 
 
 

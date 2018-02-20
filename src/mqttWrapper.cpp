@@ -34,7 +34,7 @@ MqttWrapper::MqttWrapper(const char *id, const char *host, int port, bool clean_
 
 {
     mosqpp::lib_init();
-    connect_async(host,port,keepalive);
+    connect(host,port,keepalive);
 
     if(type == LOOP_START){
         loop_start();
@@ -103,8 +103,6 @@ void MqttWrapper::on_message(const struct mosquitto_message *message)
 {
     char buf[100];
     std::string out_message = std::string();
-    
-   //std::string out_message = std::string(message->topic);
     memset(buf,0,50*sizeof(char));
     memcpy(buf,message->payload,50*sizeof(char));
     if(output){
@@ -136,8 +134,8 @@ void MqttWrapper::on_disconnect(int rc)
 {
     printf("[%s] Disconneted with code %d. \n",id, rc);
     disconnect();
-    loop_stop();
-    mosqpp::lib_cleanup();
+   // loop_stop();
+   // mosqpp::lib_cleanup();
 
 }
 

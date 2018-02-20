@@ -7,8 +7,7 @@
 
 
 
-TestPublisher::TestPublisher(MqttWrapper *mqtt):
-    mqtt(mqtt)
+TestPublisher::TestPublisher()    
 {
 }
 
@@ -16,7 +15,7 @@ TestPublisher::~TestPublisher(){
 
 }
 
-void TestPublisher::publisher_publish_messages(const char* topic, int message_size, int number_of_messages, int qos)
+void TestPublisher::publisher_publish_messages(MqttWrapper *mqtt,const char* topic, int message_size, int number_of_messages, int qos)
 {
     unsigned long int byte_size = message_size * 1000;
     if(byte_size > MAX_BYTE_SIZE){

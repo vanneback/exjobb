@@ -6,6 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <list>
+#include <unistd.h>
 
 
 ClientHandler::ClientHandler(const char *id, const char *host, int port):
@@ -47,10 +48,10 @@ int ClientHandler::clients_create_subscribers(int number_of_subs,const char* top
 
 
 int ClientHandler::clients_create_clients(int number_of_clients, bool clean_session)
-
 {
+    int size = client_list.size();
     for (int i=0; i<number_of_clients; i++){
-        char* str = create_id("-client-",i);
+        char* str = create_id("-client-",i+size);
         MqttWrapper *temp_mqtt = new MqttWrapper(str,host,port,clean_session);
         client_list.push_back(temp_mqtt);
     }
@@ -64,8 +65,7 @@ int ClientHandler::clients_create_and_publish(int number_of_pubs, char* topic, i
         char* str = create_id("-pub-",i);
         MqttWrapper *temp_mqtt = new MqttWrapper(
             str,host,port,clean_session,LOOP_WRITE);
-        TestPublisher *temp_pub = new TestPublisher(temp_mqtt);
-        temp_pub->publisher_publish_messages(topic,size,messages,qos);
+        TestPublisher::publisher_publish_messages(temp_mqtt,topic,size,messages,qos);
     }
     return 0;
 }
@@ -76,10 +76,12 @@ int ClientHandler::clients_disconnect_subs(int number_to_disc)
         number_to_disc = sub_list.size();
     }
     for(int i =0; i<number_to_disc;i++){
-        MqttWrapper *mqtt = sub_list.front();
-        mqtt->mqtt_disconnect();
-        disc_list.push_back(mqtt);
-        sub_list.pop_front();
+        if(!sub_list.empty()){
+            MqttWrapper *mqtt = sub_list.front();
+            mqtt->mqtt_disconnect();
+            disc_list.push_back(mqtt);
+            sub_list.pop_front();
+        }
     }
     return 0;
 }
@@ -107,6 +109,20 @@ int ClientHandler::clients_reconnect_subs(int number_to_reconnect, bool clean_se
         }
     }
     return 0;
+}
+
+void ClientHandler::clients_random_subscriptions(int number_of_topics){
+    MqttWrapper *mqtt = new MqttWrapper("topics",host,port);
+    std::string str;
+    for(int i =0; i<number_of_topics; i++){
+        str = std::string("test/subscriptions/");
+        str.append(std::to_string(i));
+        mqtt->mqtt_subscribe(NULL,str.data(),0);
+        if(i%20==0){
+            
+            sleep(2);
+        }
+    }
 }
 
 char* ClientHandler::create_id(const char* name, int num)

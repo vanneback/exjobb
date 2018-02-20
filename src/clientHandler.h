@@ -89,6 +89,12 @@ public:
     */
     int clients_reconnect_subs(int number_to_reconnect=0, bool clean_session=true);
 
+    void clients_random_subscriptions(int number_of_topics);
+
+    bool is_sub_empty(){
+        return sub_list.empty();
+    }
+
 private:
     /*
     * function: create_id
