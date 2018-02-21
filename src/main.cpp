@@ -1,11 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "mqttWrapper.h"
-#include "testPublisher.h"
+#include "publisher.h"
 #include "outputHandler.h"
 #include "clientHandler.h"
 #include "tests/testSubsLoad.h"
 #include "tests/testCleanLoad.h"
+#include "tests/maxLoad.h"
 #include <unistd.h>
 #include <string>
 
@@ -16,8 +17,9 @@ const char config_filename[] = "mqtt_client.json";
 
  int main(int argc, char const *argv[]) {
 
-     //TestSubsLoad::run_sub_load(900,1);
-    TestCleanLoad::run_test();
+     MaxLoad::run_message_load(400);
+    // TestSubsLoad::run_sub_load(900,1);
+    //TestCleanLoad::run_test();
     //TestSubsLoad::run_topics(1000);
    /*   MqttWrapper *mqtt = new MqttWrapper("disc", "localhost",2000,true);
      mqtt->mqtt_subscribe(NULL,"/hej",1);

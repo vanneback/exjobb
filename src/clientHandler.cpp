@@ -1,6 +1,6 @@
 #include "clientHandler.h"
 #include "mqttWrapper.h"
-#include "testPublisher.h"
+#include "publisher.h"
 #include <string.h>
 #include <fstream>
 #include <vector>
@@ -65,7 +65,7 @@ int ClientHandler::clients_create_and_publish(int number_of_pubs, char* topic, i
         char* str = create_id("-pub-",i);
         MqttWrapper *temp_mqtt = new MqttWrapper(
             str,host,port,clean_session,LOOP_WRITE);
-        TestPublisher::publisher_publish_messages(temp_mqtt,topic,size,messages,qos);
+        Publisher::publish_messages(temp_mqtt,topic,size,messages,qos);
     }
     return 0;
 }

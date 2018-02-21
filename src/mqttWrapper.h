@@ -12,7 +12,7 @@
 #define LOOP_READ 3
 #define NO_LOOP 4
 
-#define MAX_BYTE_SIZE 10000
+#define MAX_BYTE_SIZE 1000000
 
 class MqttWrapper : public mosqpp::mosquittopp
 {
