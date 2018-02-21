@@ -38,7 +38,7 @@ void TestSubsLoad::create_clients(int id)
 
 }
 
-void TestSubsLoad::run_topics(int subs)
+void TestSubsLoad::run_topics(int topics)
 {
     OutputHandler *output = new OutputHandler("output/topicsTest.csv");
    
@@ -51,7 +51,7 @@ void TestSubsLoad::run_topics(int subs)
      mqtt->mqtt_subscribe(NULL,"$SYS/broker/heap/current",0);
      output->output_write_to_file("heap",false);
      ClientHandler *clients = new ClientHandler("test3","localhost",2000);
-     clients->clients_random_subscriptions(subs);
+     clients->clients_random_subscriptions(topics);
 
 }
 void TestSubsLoad::run_sub_load(int subs, int type)
