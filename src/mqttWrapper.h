@@ -11,6 +11,7 @@
 #define LOOP_WRITE 2
 #define LOOP_READ 3
 #define NO_LOOP 4
+#define PORT_DEFAULT 2000
 
 #define MAX_BYTE_SIZE 1000000
 

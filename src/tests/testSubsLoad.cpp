@@ -18,7 +18,7 @@ TestSubsLoad::TestSubsLoad()
 
 void TestSubsLoad::create_subs(int id, bool clean_session, int qos)
 {
-     ClientHandler *clients = new ClientHandler(std::to_string(id).data(),"localhost",2000);
+    ClientHandler *clients = new ClientHandler(std::to_string(id).data(),"localhost",PORT_DEFAULT);
     for(int i=0; i<30; i++){
         clients->clients_create_subscribers(10,"/hej",qos,clean_session);
         sleep(2);
@@ -29,7 +29,7 @@ void TestSubsLoad::create_subs(int id, bool clean_session, int qos)
 
 void TestSubsLoad::create_clients(int id)
 {
-     ClientHandler *clients = new ClientHandler(std::to_string(id).data(),"localhost",2000);
+    ClientHandler *clients = new ClientHandler(std::to_string(id).data(),"localhost",PORT_DEFAULT);
     for(int i=0; i<30; i++){
         clients->clients_create_clients(10,true);
         sleep(2);
@@ -43,14 +43,14 @@ void TestSubsLoad::run_topics(int topics)
     OutputHandler *output = new OutputHandler("output/topicsTest.csv");
    
      MqttWrapper *mqtt;
-     mqtt = new MqttWrapper("test", "localhost",2000,true,LOOP_START);
+     mqtt = new MqttWrapper("test", "localhost",PORT_DEFAULT,true,LOOP_START);
      mqtt->set_output(output);     
      mqtt->set_head_topic(std::string("$SYS/broker/subscriptions/count"));
      mqtt->mqtt_subscribe(NULL,"$SYS/broker/subscriptions/count",0);
      output->output_write_to_file("topics,",true);
      mqtt->mqtt_subscribe(NULL,"$SYS/broker/heap/current",0);
      output->output_write_to_file("heap",false);
-     ClientHandler *clients = new ClientHandler("test3","localhost",2000);
+     ClientHandler *clients = new ClientHandler("test3","localhost",PORT_DEFAULT);
      clients->clients_random_subscriptions(topics);
 
 }
@@ -66,7 +66,7 @@ void TestSubsLoad::run_sub_load(int subs, int type)
         return;
     }
     MqttWrapper *mqtt;
-    mqtt = new MqttWrapper("output", "localhost",2000,true,LOOP_START);
+    mqtt = new MqttWrapper("output", "localhost",PORT_DEFAULT,true,LOOP_START);
     mqtt->set_output(output);
     mqtt->set_head_topic(std::string("$SYS/broker/clients/active"));
     mqtt->mqtt_subscribe(NULL,"$SYS/broker/clients/active",0);

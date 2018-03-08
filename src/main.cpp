@@ -17,7 +17,8 @@ const char config_filename[] = "mqtt_client.json";
 
  int main(int argc, char const *argv[]) {
 
-     MaxLoad::run_message_load(400);
+     
+     //MaxLoad::run_message_load(400);
     // TestSubsLoad::run_sub_load(900,1);
     //TestCleanLoad::run_test();
     //TestSubsLoad::run_topics(1000);
