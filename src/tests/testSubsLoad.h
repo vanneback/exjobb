@@ -1,5 +1,6 @@
 #ifndef TESTSUBSLOAD_H
 #define TESTSUBSLOAD_H
+#include "../outputHandler.h"
 
 class TestSubsLoad
 {
@@ -34,7 +35,7 @@ public:
 
 private:
     static void create_clients(int id);    
-    static void create_subs(int id,bool clean_session=true, int qos=0);
+    static void create_subs(int id,OutputHandler *output,bool clean_session=true, int qos=0);
 
 
 

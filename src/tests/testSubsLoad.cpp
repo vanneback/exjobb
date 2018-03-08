@@ -16,10 +16,11 @@ TestSubsLoad::TestSubsLoad()
 
 }
 
-void TestSubsLoad::create_subs(int id, bool clean_session, int qos)
+void TestSubsLoad::create_subs(int id, OutputHandler *out, bool clean_session, int qos)
 {
     ClientHandler *clients = new ClientHandler(std::to_string(id).data(),"localhost",PORT_DEFAULT);
     for(int i=0; i<30; i++){
+        out->output_system_to_file("vmstat -w | tail -n 1 | cut -c88-");
         clients->clients_create_subscribers(10,"/hej",qos,clean_session);
         sleep(2);
     }
@@ -74,6 +75,7 @@ void TestSubsLoad::run_sub_load(int subs, int type)
     
     mqtt->subscribe(NULL,"$SYS/broker/heap/current",0);
     output->output_write_to_file(",Heap",false);
+    output->output_write_to_file(",cs,us,sy,id,wa,st",false);
 
     int n = floor(subs/300);
     printf("n = %d\n",n);
@@ -95,7 +97,7 @@ void TestSubsLoad::run_sub_load(int subs, int type)
             exit(-1);
         } else if (pid == 0){
             if(type==1){
-                create_subs(i);
+                create_subs(i,output);
             } else if(type==2){
                 create_clients(i);
             }

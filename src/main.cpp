@@ -19,7 +19,7 @@ const char config_filename[] = "mqtt_client.json";
 
      
      //MaxLoad::run_message_load(400);
-    // TestSubsLoad::run_sub_load(900,1);
+     TestSubsLoad::run_sub_load(500,1);
     //TestCleanLoad::run_test();
     //TestSubsLoad::run_topics(1000);
    /*   MqttWrapper *mqtt = new MqttWrapper("disc", "localhost",2000,true);

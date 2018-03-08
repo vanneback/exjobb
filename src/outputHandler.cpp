@@ -69,7 +69,7 @@ int OutputHandler::output_system_to_file(const char* command)
             outbuf.append(inbuf);
         }
         pclose(infile);
-        output_write_to_file(outbuf.data(),true);
+        output_write_to_file(outbuf.data(),false);
     }
     return 0;
 }
