@@ -21,5 +21,7 @@ public:
     */
     static void run_message_load(int mb);
 
+    static void run_consistent_load(int kb, int no_messages, int subs,int duration,int qos=0);
+
 };
 #endif

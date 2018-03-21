@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <chrono>
+#include <thread>
+
 
 
 
@@ -27,5 +30,6 @@ void Publisher::publish_messages(MqttWrapper *mqtt,const char* topic, int messag
     message_size,number_of_messages, (byte_size*number_of_messages)/1000000);
     for(int i=0; i<number_of_messages; i++){
         mqtt->mqtt_publish(byte_size,topic, &message, qos);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }

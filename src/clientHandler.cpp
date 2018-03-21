@@ -120,7 +120,7 @@ void ClientHandler::clients_random_subscriptions(int number_of_topics){
         mqtt->mqtt_subscribe(NULL,str.data(),0);
         if(i%20==0){
             
-            sleep(2);
+            //sleep(2);
         }
     }
 }

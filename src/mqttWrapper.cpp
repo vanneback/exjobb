@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <map>
 
 
 MqttWrapper::MqttWrapper(void) 
@@ -103,15 +104,22 @@ void MqttWrapper::on_message(const struct mosquitto_message *message)
 {
     char buf[100];
     std::string out_message = std::string();
+    std::string topic = std::string(message->topic);
     memset(buf,0,50*sizeof(char));
     memcpy(buf,message->payload,50*sizeof(char));
     if(output){
         out_message.append(buf);
         out_message.append(",");
-        if(head_topic.compare(std::string(message->topic))==0){
-           output->output_write_to_file(out_message.data(),true);    
+        if(head_topic.compare(topic)==0){
+           output->output_write_to_file(out_message.data(),true);
+           for (auto& element: topics) {
+                element.second = true;
+            }    
         } else {
-            output->output_write_to_file(out_message.data(),false);
+            if(topics.at(topic)==true){
+                output->output_write_to_file(out_message.data(),false);
+                topics.at(topic) = false;
+            }
         }
 
     } else {
@@ -156,10 +164,6 @@ void MqttWrapper::on_log(int level, const char *str){
     }
 
 
-}
-
-void MqttWrapper::add_topic(char* topic){
-    topics.push_back(std::string(topic));
 }
 
 void MqttWrapper::on_error(){
@@ -213,6 +217,10 @@ int MqttWrapper::get_port()
 void MqttWrapper::set_head_topic(std::string topic)
 {
     this->head_topic = topic;
+}
+
+void MqttWrapper::add_topic(std::string topic){
+    topics.insert(std::pair<std::string,bool>(topic,true));
 }
 
 
