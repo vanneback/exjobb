@@ -14,8 +14,10 @@
 #define NO_LOOP 4
 #define PORT_DEFAULT 1883
 #define HOSTADDRESS "192.168.77.222"
+#define LAPTOPADDRESS "192.168.77.199"
+#define LAPTOPPORT 1883
 
-#define MAX_BYTE_SIZE 1000000
+#define MAX_BYTE_SIZE 250000000
 
 class MqttWrapper : public mosqpp::mosquittopp
 {

@@ -19,7 +19,6 @@ void TestSubsLoad::create_subs(int id, OutputHandler *out, bool clean_session, i
     ClientHandler *clients = new ClientHandler(std::to_string(id).data(), HOSTADDRESS, PORT_DEFAULT);
     for (int i = 0; i < 30; i++)
     {
-        //out->output_system_to_file("vmstat -w | tail -n 1 | cut -c88-");
         clients->clients_create_subscribers(10, "/hej", qos, clean_session);
         sleep(1);
     }
@@ -117,13 +116,11 @@ void TestSubsLoad::run_sub_load(int subs, int type)
             {
                 create_clients(i);
             }
-           // sleep(300);
             exit(0);
         }
     }
     while (parent = wait(&status));
 
-    //delete clients;
     delete mqtt;
     delete output;
 }

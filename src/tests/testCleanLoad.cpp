@@ -26,5 +26,4 @@ void TestCleanLoad::run_test()
         clients->clients_disconnect_subs(10);
         sleep(2);
     }
-
 }
